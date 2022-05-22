@@ -5,6 +5,7 @@ let guessesRemaining = NUMBER_OF_GUESSES;
 let currentGuess = [];
 let nextLetter = 0;
 let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)]
+const port = process.env.PORT || 8080
 
 console.log(rightGuessString)
 
@@ -195,6 +196,10 @@ document.getElementById("keyboard-cont").addEventListener("click", (e) => {
     } 
 
     document.dispatchEvent(new KeyboardEvent("keyup", {'key': key}))
+})
+
+app.listen(port, () => {
+    console.log('port: ${port}');
 })
 
 initBoard();
