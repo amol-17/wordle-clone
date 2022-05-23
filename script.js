@@ -26,24 +26,6 @@ function initBoard() {
     }
 }
 
-function shadeKeyBoard(letter, color) {
-    for (const elem of document.getElementsByClassName("keyboard-button")) {
-        if (elem.textContent === letter) {
-            let oldColor = elem.style.backgroundColor
-            if (oldColor === 'green') {
-                return
-            } 
-
-            if (oldColor === 'yellow' && color !== 'green') {
-                return
-            }
-
-            elem.style.backgroundColor = color
-            break
-        }
-    }
-}
-
 function deleteLetter () {
     let row = document.getElementsByClassName("letter-row")[6 - guessesRemaining]
     let box = row.children[nextLetter - 1]
@@ -79,18 +61,12 @@ function checkGuess () {
         let letter = currentGuess[i]
         
         let letterPosition = rightGuess.indexOf(currentGuess[i])
-        // is letter in the correct guess
         if (letterPosition === -1) {
             letterColor = 'grey'
         } else {
-            // now, letter is definitely in word
-            // if letter index and right guess index are the same
-            // letter is in the right position 
             if (currentGuess[i] === rightGuess[i]) {
-                // shade green 
                 letterColor = 'green'
             } else {
-                // shade box yellow
                 letterColor = 'yellow'
             }
 
@@ -99,11 +75,8 @@ function checkGuess () {
 
         let delay = 250 * i
         setTimeout(()=> {
-            //flip box
             animateCSS(box, 'flipInX')
-            //shade box
             box.style.backgroundColor = letterColor
-            shadeKeyBoard(letter, letterColor)
         }, delay)
     }
 
@@ -139,16 +112,14 @@ function insertLetter (pressedKey) {
 }
 
 const animateCSS = (element, animation, prefix = 'animate__') =>
-  // We create a Promise and return it
+
   new Promise((resolve, reject) => {
     const animationName = `${prefix}${animation}`;
-    // const node = document.querySelector(element);
     const node = element
     node.style.setProperty('--animate-duration', '0.3s');
     
     node.classList.add(`${prefix}animated`, animationName);
 
-    // When the animation ends, we clean the classes and resolve the Promise
     function handleAnimationEnd(event) {
       event.stopPropagation();
       node.classList.remove(`${prefix}animated`, animationName);
